@@ -1,5 +1,7 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todo_app/common/router/app_router.gr.dart';
 import 'package:todo_app/common/theme/cubit/theme_cubit.dart';
 
 class TodoApp extends StatelessWidget {
@@ -7,8 +9,12 @@ class TodoApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
+    return AutoTabsScaffold(
+      routes: const [
+        NewTodoRouter(),
+        ProfileRouter(),
+      ],
+      appBarBuilder: (context, tabsRouter) => AppBar(
         centerTitle: true,
         title: const Text('Todo'),
         actions: [
@@ -20,8 +26,23 @@ class TodoApp extends StatelessWidget {
           ),
         ],
       ),
-      body: Center(
-        child: Container(),
+      bottomNavigationBuilder: (_, tabsRouter) => BottomNavigationBar(
+        currentIndex: tabsRouter.activeIndex,
+        onTap: tabsRouter.setActiveIndex,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.add,
+            ),
+            label: 'Add',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.account_circle_outlined,
+            ),
+            label: 'Profile',
+          ),
+        ],
       ),
     );
   }
